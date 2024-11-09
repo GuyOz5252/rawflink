@@ -1,0 +1,89 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.3.5'
+	id 'io.spring.dependency-management' version '1.1.6'
+	//
+	id 'com.github.johnrengelman.shadow' version '7.1.2'
+}
+
+group = 'com.project'
+version = '0.0.1-SNAPSHOT'
+
+//
+ext {
+	javaVersion = '1.8'
+	flinkVersion = '1.15.3'
+	scalaBinaryVersion = '_2.12'
+	slf4jVersion = '1.7.36'
+	log4jVersion = '2.17.1'
+}
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+
+	//
+	flinkShadowJar // dependencies which go into the shadowJar
+	// always exclude these (also from transitive dependencies) since they are provided by Flink
+	flinkShadowJar.exclude group: 'org.apache.flink', module: 'force-shading'
+	flinkShadowJar.exclude group: 'com.google.code.findbugs', module: 'jsr305'
+	flinkShadowJar.exclude group: 'org.slf4j'
+	flinkShadowJar.exclude group: 'org.apache.logging.log4j'
+}
+
+repositories {
+	mavenCentral()
+	//
+	maven {
+		url "https://repository.apache.org/content/repositories/snapshots"
+		mavenContent {
+			snapshotsOnly()
+		}
+	}
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter'
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+	//
+	implementation 'org.mapstruct:mapstruct:1.6.3'
+
+	annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.3'
+
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.0'
+	implementation 'org.apache.flink:flink-sql-json:1.18.1'
+
+	implementation "org.apache.flink:flink-core:${flinkVersion}"
+
+	implementation "org.apache.flink:flink-connector-kafka:${flinkVersion}"
+
+	// --------------------------------------------------------------
+	// Compile-time dependencies that should NOT be part of the
+	// shadow (uber) jar and are provided in the lib folder of Flink
+	// --------------------------------------------------------------
+	implementation "org.apache.flink:flink-streaming-java:${flinkVersion}"
+	implementation "org.apache.flink:flink-clients:${flinkVersion}"
+	// --------------------------------------------------------------
+	// Dependencies that should be part of the shadow jar, e.g.
+	// connectors. These must be in the flinkShadowJar configuration!
+	// --------------------------------------------------------------
+	//flinkShadowJar "org.apache.flink:flink-connector-kafka:${flinkVersion}"
+	runtimeOnly "org.apache.logging.log4j:log4j-slf4j-impl:${log4jVersion}"
+	runtimeOnly "org.apache.logging.log4j:log4j-api:${log4jVersion}"
+	runtimeOnly "org.apache.logging.log4j:log4j-core:${log4jVersion}"
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
