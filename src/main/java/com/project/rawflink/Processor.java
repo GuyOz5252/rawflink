@@ -1,5 +1,7 @@
 package com.project.rawflink;
 
+import com.project.rawflink.events.InputEvent;
+import com.project.rawflink.mappers.InputEventToProcessingEventMapper;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.connector.kafka.source.KafkaSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;

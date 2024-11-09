@@ -1,6 +1,7 @@
-package com.project.rawflink;
+package com.project.rawflink.serializationSchemas;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.project.rawflink.events.InputEvent;
 import org.apache.flink.api.common.serialization.DeserializationSchema;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 

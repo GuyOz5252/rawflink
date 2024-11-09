@@ -1,5 +1,7 @@
-package com.project.rawflink;
+package com.project.rawflink.beans;
 
+import com.project.rawflink.events.InputEvent;
+import com.project.rawflink.serializationSchemas.InputEventDeserializationSchema;
 import org.apache.flink.api.common.serialization.DeserializationSchema;
 import org.apache.flink.connector.kafka.source.KafkaSource;
 import org.apache.flink.connector.kafka.source.enumerator.initializer.OffsetsInitializer;

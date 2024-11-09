@@ -1,4 +1,4 @@
 kafka:
   bootstrap-servers: localhost:9092
   topic: project.input-topic
-  group-id: project.flink-quickstart
+  group-id: project.rawflink

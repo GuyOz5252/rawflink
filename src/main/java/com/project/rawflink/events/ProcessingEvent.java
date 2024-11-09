@@ -1,4 +1,4 @@
-package com.project.rawflink;
+package com.project.rawflink.events;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

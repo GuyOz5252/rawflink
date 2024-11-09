@@ -1,5 +1,7 @@
-package com.project.rawflink;
+package com.project.rawflink.mappers;
 
+import com.project.rawflink.events.InputEvent;
+import com.project.rawflink.events.ProcessingEvent;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
